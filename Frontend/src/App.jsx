@@ -17,6 +17,7 @@ import ProjectDetail from './pages/ProjectDetail'
 import ProjectsPage from './pages/Projects'
 import GalleryPage from './pages/Gallery'
 import ContactPage from './pages/Contact'
+import { Mail, Phone } from 'lucide-react'
 
 function HomeContent() {
   return (
@@ -36,7 +37,24 @@ function HomeContent() {
 export default function App() {
   return (
     <BrowserRouter >
-      <div className="font-sans text-[#1A1A1A] bg-white">
+      <div className="min-h-screen bg-white font-sans text-[#1A1A1A]">
+        {/* Top Info Bar */}
+        <div className="bg-black text-white py-3">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between text-sm">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-[#D4AF37]" />
+                <span>+91 8788430110</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-[#D4AF37]" />
+                <span>info@vviprealty.com</span>
+              </div>
+            </div>
+            <div className="text-[#D4AF37]">Limited Time Offer - Book Now!</div>
+          </div>
+        </div>
+
         <Navbar />
 
         <main>

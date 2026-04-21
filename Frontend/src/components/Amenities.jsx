@@ -85,7 +85,7 @@ export default function Amenities() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="font-display text-4xl md:text-5xl font-bold text-[#1A1A1A] mb-2">
-            World-Class <span className="text-gold-gradient">Amenities</span>
+            World Class <span className="text-gold-gradient">Amenities</span>
           </h2>
 
           <motion.div

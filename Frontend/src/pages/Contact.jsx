@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { CheckCircle2, Check, Clock, Mail, MapPin, Phone } from 'lucide-react'
-import Navbar from '../components/Navbar'
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false)
@@ -13,9 +12,7 @@ export default function Contact() {
   }
 
   return (
-    <>
-      <Navbar />
-      <section id="contact" className="bg-white py-24 px-4 relative overflow-hidden mt-16">
+    <section id="contact" className="bg-white py-24 px-4 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-[130px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#D4AF37]/4 rounded-full blur-[100px] pointer-events-none" />
 
@@ -248,6 +245,5 @@ export default function Contact() {
           </div>
         </div>
       </section>
-    </>
   )
 }

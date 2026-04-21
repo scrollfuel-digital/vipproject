@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Menu, X } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { CircleUser, Menu, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import logo from '../assets/download.png'
 
 const NAV = [
@@ -14,80 +15,128 @@ const NAV = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const handleNavClick = (e, to, label) => {
+    // If we're on home page and clicking Projects, Gallery, or Contact
+    if (location.pathname === '/' && ['Projects', 'Gallery', 'Contact'].includes(label)) {
+      e.preventDefault()
+      const sectionId = label.toLowerCase()
+      const element = document.getElementById(sectionId)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+      setMenuOpen(false)
+    } else if (to !== location.pathname) {
+      // Navigate to the page
+      setMenuOpen(false)
+    }
+  }
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur border-b border-[#D4AF37]/20 shadow-sm">
-      <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between">
+    <motion.nav
+      className="sticky top-0 w-full z-50 glass-dark shadow-lg"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-2 flex items-center justify-between">
 
         {/* Logo */}
-        <Link to="/" className="flex items-center">
-          <img src={logo} alt="V.VIP Realty" className="h-14 w-auto object-contain scale-200" />
+        <Link to="/" className="flex items-center z-50">
+          <img src={logo} alt="V.VIP Realty" className="h-16 w-auto object-contain scale-210" />
         </Link>
 
         {/* Desktop Links */}
-        <ul className="hidden md:flex gap-8">
-          {NAV.map(({ label, to }) => (
-            <li key={label}>
-              <Link
-                to={to}
-                className="text-sm font-medium text-[#1A1A1A] hover:text-[#D4AF37] transition-colors duration-200 tracking-wide"
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+        <ul className="hidden lg:flex items-center gap-10">
+          {NAV.map(({ label, to }) => {
+            const isActive = location.pathname === to
+            return (
+              <li key={label}>
+                <Link
+                  to={to}
+                  onClick={(e) => handleNavClick(e, to, label)}
+                  className={`relative text-sm font-medium tracking-wide transition-colors duration-300 group ${isActive ? 'text-[#D4AF37]' : 'text-white hover:text-[#D4AF37]'
+                    }`}
+                >
+                  {label}
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-[#D4AF37] transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`} />
+                </Link>
+              </li>
+            )
+          })}
         </ul>
 
         {/* Desktop CTAs */}
-        <div className="hidden md:flex items-center gap-3">
-          <Link to="/#contact"
-            className="border border-[#D4AF37] text-[#B8962E] text-sm px-4 py-2 rounded-lg hover:bg-[#D4AF37]/10 transition-all duration-200 font-medium">
-            Login
-          </Link>
-          <Link to="/#contact"
-            className="bg-[#D4AF37] hover:bg-[#B8962E] text-white text-sm px-5 py-2 rounded-lg font-bold transition-all duration-200 tracking-wide shadow-md hover:shadow-[0_4px_15px_rgba(212,175,55,0.4)]">
+        <div className="hidden lg:flex items-center gap-4">
+
+          <span className="text-[#D4AF37] hover:text-[#B8962E] p-4 rounded-full">
+            <CircleUser />
+          </span>
+          <Link
+            to="/contact"
+            className="bg-[#D4AF37] hover:bg-[#B8962E] text-white text-sm font-semibold px-6 py-2.5 rounded-lg transition-all duration-300 shadow-lg hover:shadow-[0_8px_30px_rgba(212,175,55,0.4)]"
+          >
             Book Visit
           </Link>
         </div>
 
         {/* Mobile Hamburger */}
         <button
-          className="md:hidden p-2 rounded-lg text-[#D4AF37] hover:bg-[#D4AF37]/10 transition-colors"
+          className="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors z-50"
           onClick={() => setMenuOpen(o => !o)}
         >
-          {menuOpen ? (
-            <X className="w-5 h-5" />
-          ) : (
-            <Menu className="w-5 h-5" />
-          )}
+          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
       {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-white border-t border-[#D4AF37]/20 px-4 py-4 space-y-3">
-          {NAV.map(({ label, to }) => (
-            <Link
-              key={label}
-              to={to}
-              onClick={() => setMenuOpen(false)}
-              className="block text-sm font-medium text-[#1A1A1A] hover:text-[#D4AF37] py-1.5 transition-colors"
-            >
-              {label}
-            </Link>
-          ))}
-          <div className="flex gap-3 pt-3 border-t border-[#D4AF37]/20">
-            <Link to="/#contact" onClick={() => setMenuOpen(false)}
-              className="flex-1 text-center border border-[#D4AF37] text-[#B8962E] text-sm px-4 py-2 rounded-lg font-medium">
-              Login
-            </Link>
-            <Link to="/#contact" onClick={() => setMenuOpen(false)}
-              className="flex-1 text-center bg-[#D4AF37] text-white text-sm px-4 py-2 rounded-lg font-bold">
-              Book Visit
-            </Link>
-          </div>
-        </div>
-      )}
-    </nav>
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            className="lg:hidden glass-dark border-t border-white/10"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="px-6 py-6 space-y-4">
+              {NAV.map(({ label, to }) => {
+                const isActive = location.pathname === to
+                return (
+                  <Link
+                    key={label}
+                    to={to}
+                    onClick={(e) => handleNavClick(e, to, label)}
+                    className={`block text-base font-medium py-2 transition-colors ${isActive ? 'text-[#D4AF37]' : 'text-white hover:text-[#D4AF37]'
+                      }`}
+                  >
+                    {label}
+                  </Link>
+                )
+              })}
+              <div className="flex flex-col gap-3 pt-4 border-t border-white/10">
+                <Link
+                  to="/contact"
+                  onClick={() => setMenuOpen(false)}
+                  className="text-center border-2 border-white/30 text-white text-sm font-medium px-6 py-3 rounded-lg"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/contact"
+                  onClick={() => setMenuOpen(false)}
+                  className="text-center bg-[#D4AF37] text-white text-sm font-semibold px-6 py-3 rounded-lg"
+                >
+                  Book Visit
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   )
 }

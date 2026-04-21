@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import Navbar from '../components/Navbar'
 
 const CATEGORIES = ['All', 'Exterior', 'Interior', 'Amenities', 'Location']
 
@@ -21,9 +20,7 @@ export default function Gallery() {
   const filtered = active === 'All' ? ITEMS : ITEMS.filter(i => i.tag === active)
 
   return (
-    <>
-      <Navbar />
-      <section id="gallery" className="bg-[#FAFAFA] py-24 px-4 relative overflow-hidden mt-16">
+    <section id="gallery" className="bg-[#FAFAFA] py-24 px-4 relative overflow-hidden">
         <div className="absolute top-1/2 right-0 w-80 h-80 bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="max-w-6xl mx-auto relative z-10">
@@ -154,6 +151,5 @@ export default function Gallery() {
           </motion.div>
         </div>
       </section>
-    </>
   )
 }

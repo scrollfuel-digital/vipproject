@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CheckCircle2, Check, Clock, Mail, MapPin, Phone } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false)
@@ -28,11 +29,15 @@ export default function Contact() {
           <p className="text-[#666666] text-base max-w-xl mx-auto">
             Looking to buy your dream home or invest in Nagpur? Our experts are ready to guide you.
           </p>
+          <Link to="/contact">
+            <button className="mt-6 bg-[#D4AF37] hover:bg-[#B8962E] text-white font-bold py-3 px-8 rounded-xl text-sm tracking-widest uppercase transition-all duration-300 shadow-lg hover:shadow-[0_8px_25px_rgba(212,175,55,0.35)]">
+              Contact Us
+            </button>
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
 
-          {/* Left Info */}
           <div className="space-y-4">
             {[
               { icon: MapPin, label: 'Location', value: 'Nagpur, Maharashtra' },
@@ -51,7 +56,7 @@ export default function Contact() {
               </div>
             ))}
 
-            {/* Why Choose Us */}
+          
             <div className="bg-[#FAFAFA] border border-[#D4AF37]/25 rounded-2xl p-6 mt-2">
               <p className="text-[#B8962E] text-xs font-bold uppercase tracking-[0.3em] mb-4">Why Choose V.VIP Realty?</p>
               <ul className="space-y-3">
@@ -67,7 +72,6 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Right Form */}
           <div className="bg-[#FAFAFA] border border-[#D4AF37]/20 rounded-2xl p-8 shadow-sm">
             <h3 className="text-[#1A1A1A] font-bold text-lg mb-1">Send Us a Message</h3>
             <p className="text-[#666666] text-xs mb-6">Fill in the form and our team will contact you within 24 hours.</p>
@@ -135,7 +139,7 @@ export default function Contact() {
               </form>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   )

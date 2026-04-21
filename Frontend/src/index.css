@@ -1,13 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @layer base {
   html { scroll-behavior: smooth; }
-  body { font-family: 'Inter', sans-serif; background: #ffffff; }
+  body { font-family: 'Poppins', sans-serif; background: #ffffff; color: #1A1A1A; }
 }
 
 @layer utilities {
-  .font-display { font-family: 'Cormorant Garamond', serif; }
+  .font-display { font-family: 'Playfair Display', serif; }
 
   .text-gold-gradient {
     background: linear-gradient(135deg, #D4AF37 0%, #F5E27A 45%, #D4AF37 75%, #A8892A 100%);
@@ -17,10 +17,17 @@
   }
 
   .glass {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(212, 175, 55, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .glass-dark {
+    background: #000000;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
 
