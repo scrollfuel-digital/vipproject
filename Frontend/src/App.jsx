@@ -18,12 +18,14 @@ import ProjectsPage from './pages/Projects'
 import GalleryPage from './pages/Gallery'
 import ContactPage from './pages/Contact'
 import { Mail, Phone } from 'lucide-react'
+// import AboutUs from './components/AboutUs'
 
 function HomeContent() {
   return (
     <>
       <Hero />
       <About />
+      {/* <AboutUs /> */}
       <Projects />
       <Amenities />
       <Gallery />
