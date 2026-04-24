@@ -9,10 +9,26 @@
     color: #111111;
     overflow-x: hidden;
   }
+  
+  /* Apply Poppins to all elements by default */
+  * {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Headings use Playfair Display */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+  
+  /* Buttons, inputs, and form elements */
+  button, input, select, textarea {
+    font-family: 'Poppins', sans-serif;
+  }
 }
 
 @layer utilities {
   .font-display { font-family: 'Playfair Display', serif; }
+  .font-body { font-family: 'Poppins', sans-serif; }
 
   .text-gold-gradient {
     background: linear-gradient(135deg, #D4AF37 0%, #F5E27A 45%, #D4AF37 75%, #A8892A 100%);
@@ -48,6 +64,12 @@
 
   .section-padding-sm {
     padding: 80px 0;
+  }
+  
+  /* Ensure consistent font rendering */
+  .font-smooth {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 

@@ -737,7 +737,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { Home, Building2, HardHat, Key, Road, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Home, Building2, HardHat, Key, Road, TrendingUp, ChevronLeft, ChevronRight, X, Bed, Bath, Maximize2, MapPin } from 'lucide-react'
 
 const LOCATIONS = [
   { name: 'MIHAN', desc: 'Major investment hub', icon: Building2 },
@@ -761,6 +761,12 @@ const PROJECTS = [
     plotSizes: ['1200 sq.ft', '1400 sq.ft', '1600 sq.ft', '1800 sq.ft'],
     location: 'MIHAN, Nagpur',
     area: 'MIHAN',
+    availableUnits: [
+      { id: 1, name: 'Tower A - 2BHK', size: '1200 sq.ft', price: '₹45L', bedrooms: 2, bathrooms: 2, floor: '5th', image: '/api/placeholder/400/300' },
+      { id: 2, name: 'Tower A - 3BHK', size: '1600 sq.ft', price: '₹65L', bedrooms: 3, bathrooms: 3, floor: '7th', image: '/api/placeholder/400/300' },
+      { id: 3, name: 'Tower B - 2BHK', size: '1400 sq.ft', price: '₹52L', bedrooms: 2, bathrooms: 2, floor: '3rd', image: '/api/placeholder/400/300' },
+      { id: 4, name: 'Tower B - 3BHK', size: '1800 sq.ft', price: '₹72L', bedrooms: 3, bathrooms: 3, floor: '9th', image: '/api/placeholder/400/300' },
+    ]
   },
   {
     id: 'commercial-spaces',
@@ -776,6 +782,11 @@ const PROJECTS = [
     plotSizes: ['500 sq.ft', '750 sq.ft', '1000 sq.ft', '1500 sq.ft', '2000 sq.ft'],
     location: 'Wardha Road, Nagpur',
     area: 'Wardha Road',
+    availableUnits: [
+      { id: 1, name: 'Shop Unit 101', size: '500 sq.ft', price: '₹35L', type: 'Retail', floor: 'Ground', image: '/api/placeholder/400/300' },
+      { id: 2, name: 'Office Space 201', size: '1000 sq.ft', price: '₹65L', type: 'Office', floor: '2nd', image: '/api/placeholder/400/300' },
+      { id: 3, name: 'Shop Unit 105', size: '750 sq.ft', price: '₹48L', type: 'Retail', floor: 'Ground', image: '/api/placeholder/400/300' },
+    ]
   },
   {
     id: 'ongoing-projects',
@@ -809,8 +820,7 @@ const PROJECTS = [
   },
 ]
 
-function ProjectCard({ project, index }) {
-  const navigate = useNavigate()
+function ProjectCard({ project, index, onCardClick }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [selectedPlot, setSelectedPlot] = useState('')
 
@@ -839,7 +849,7 @@ function ProjectCard({ project, index }) {
       transition={{ delay: index * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -8, scale: 1.02 }}
       layout
-      onClick={() => navigate(`/project/${project.id}`)}
+      onClick={() => onCardClick(project)}
     >
       {/* Image Slider */}
       <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#FAFAFA] to-[#FFF8E7]">
@@ -923,9 +933,9 @@ function ProjectCard({ project, index }) {
           </div>
           <button
             className="text-[10px] font-bold uppercase tracking-widest text-white bg-[#D4AF37] hover:bg-[#B8962E] px-3 py-1.5 rounded-lg transition-colors"
-            onClick={(e) => { e.stopPropagation(); navigate(`/project/${project.id}`) }}
+            onClick={(e) => { e.stopPropagation(); onCardClick(project) }}
           >
-            View Details
+            View Units
           </button>
         </div>
       </div>
@@ -933,8 +943,134 @@ function ProjectCard({ project, index }) {
   )
 }
 
+function PropertyModal({ project, onClose }) {
+  const navigate = useNavigate()
+  const [hoveredUnit, setHoveredUnit] = useState(null)
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.9, y: 20 }}
+        className="bg-white rounded-3xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="relative bg-gradient-to-r from-[#D4AF37] to-[#F5E27A] p-8">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 backdrop-blur flex items-center justify-center hover:bg-white/30 transition-colors"
+          >
+            <X className="w-5 h-5 text-white" />
+          </button>
+          <div className="flex items-start gap-4">
+            <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
+              <project.icon className="w-8 h-8 text-white" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-white mb-2">{project.title}</h2>
+              <div className="flex items-center gap-4 text-white/90 text-sm">
+                <span className="flex items-center gap-1"><MapPin size={14} /> {project.location}</span>
+                <span className="flex items-center gap-1"><Maximize2 size={14} /> {project.plots}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-8 overflow-y-auto max-h-[calc(90vh-180px)]">
+          <div className="mb-6">
+            <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">Available Units</h3>
+            <p className="text-sm text-[#666666]">{project.availableUnits?.length || 0} units available in this category</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {project.availableUnits?.map((unit) => (
+              <motion.div
+                key={unit.id}
+                whileHover={{ y: -5 }}
+                className="group relative bg-white border-2 border-[#D4AF37]/20 rounded-2xl overflow-hidden hover:border-[#D4AF37] hover:shadow-xl transition-all cursor-pointer"
+                onMouseEnter={() => setHoveredUnit(unit.id)}
+                onMouseLeave={() => setHoveredUnit(null)}
+                onClick={() => navigate(`/project/${project.id}`)}
+              >
+                {/* Image with hover overlay */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={unit.image}
+                    alt={unit.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <AnimatePresence>
+                    {hoveredUnit === unit.id && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end p-4"
+                      >
+                        <div className="text-white">
+                          <p className="text-xs uppercase tracking-wider mb-1">Floor Plan</p>
+                          <p className="text-sm font-semibold">Click to view details</p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  <div className="absolute top-3 right-3 bg-[#D4AF37] text-white text-xs font-bold px-3 py-1 rounded-full">
+                    {unit.price}
+                  </div>
+                </div>
+
+                {/* Details */}
+                <div className="p-5">
+                  <h4 className="text-lg font-bold text-[#1A1A1A] mb-3 group-hover:text-[#D4AF37] transition-colors">{unit.name}</h4>
+                  
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    {unit.bedrooms && (
+                      <div className="flex items-center gap-2 text-sm text-[#666666]">
+                        <Bed size={16} className="text-[#D4AF37]" />
+                        <span>{unit.bedrooms} Beds</span>
+                      </div>
+                    )}
+                    {unit.bathrooms && (
+                      <div className="flex items-center gap-2 text-sm text-[#666666]">
+                        <Bath size={16} className="text-[#D4AF37]" />
+                        <span>{unit.bathrooms} Baths</span>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2 text-sm text-[#666666]">
+                      <Maximize2 size={16} className="text-[#D4AF37]" />
+                      <span>{unit.size}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-[#666666]">
+                      <span className="text-[#D4AF37]">📍</span>
+                      <span>{unit.floor} Floor</span>
+                    </div>
+                  </div>
+
+                  <button className="w-full bg-gradient-to-r from-[#D4AF37] to-[#F5E27A] text-white font-semibold py-2 rounded-lg hover:shadow-lg transition-all">
+                    View Full Details
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 export default function Projects() {
   const [selectedArea, setSelectedArea] = useState('All')
+  const [selectedProject, setSelectedProject] = useState(null)
 
   const filteredProjects = selectedArea === 'All'
     ? PROJECTS
@@ -1013,7 +1149,7 @@ export default function Projects() {
           {filteredProjects.length > 0 ? (
             <motion.div key="grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" layout>
               {filteredProjects.map((project, i) => (
-                <ProjectCard key={project.id} project={project} index={i} />
+                <ProjectCard key={project.id} project={project} index={i} onCardClick={setSelectedProject} />
               ))}
             </motion.div>
           ) : (
@@ -1038,6 +1174,13 @@ export default function Projects() {
         </motion.div>
 
       </div>
+
+      {/* Property Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <PropertyModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+        )}
+      </AnimatePresence>
     </section>
   )
 }

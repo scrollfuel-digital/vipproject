@@ -25,12 +25,10 @@ function HomeContent() {
     <>
       <Hero />
       <About />
-      {/* <AboutUs /> */}
-      <Projects />
+      <ProjectsPage />
       <Amenities />
-      <Gallery />
+      <GalleryPage />
       <Testimonials />
-      <FAQ />
       <Contact />
     </>
   )
@@ -41,7 +39,7 @@ export default function App() {
     <BrowserRouter >
       <div className="min-h-screen bg-white font-sans text-[#1A1A1A]">
         {/* Top Info Bar */}
-        <div className="bg-black text-white py-3">
+        <div className="bg-white text-black py-3">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between text-sm">
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">

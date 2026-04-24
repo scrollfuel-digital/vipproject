@@ -8,7 +8,7 @@ const NAV = [
   { label: 'Home', to: '/' },
   { label: 'About', to: '/about' },
   { label: 'Projects', to: '/projects' },
-  { label: 'Amenities', to: '/amenities' },
+  // { label: 'Amenities', to: '/amenities' },
   { label: 'Gallery', to: '/gallery' },
   { label: 'Contact', to: '/contact' },
 ]
@@ -36,12 +36,13 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      className="sticky top-0 w-full z-50 glass-dark shadow-lg"
+      
+      className="sticky top-4 mx-4 rounded-2xl bg-white shadow-md z-50"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-2 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-2 flex items-center justify-between ">
 
         {/* Logo */}
         <Link to="/" className="flex items-center z-50">
@@ -57,7 +58,7 @@ export default function Navbar() {
                 <Link
                   to={to}
                   onClick={(e) => handleNavClick(e, to, label)}
-                  className={`relative text-sm font-medium tracking-wide transition-colors duration-300 group ${isActive ? 'text-[#D4AF37]' : 'text-white hover:text-[#D4AF37]'
+                  className={`relative text-sm font-medium tracking-wide transition-colors duration-300 group ${isActive ? 'text-[#D4AF37]' : 'text-black hover:text-[#D4AF37]'
                     }`}
                 >
                   {label}

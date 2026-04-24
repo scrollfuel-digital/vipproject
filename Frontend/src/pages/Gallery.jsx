@@ -20,10 +20,24 @@ export default function Gallery() {
   const filtered = active === 'All' ? ITEMS : ITEMS.filter(i => i.tag === active)
 
   return (
-    <section id="gallery" className="bg-[#FAFAFA] py-24 px-4 relative overflow-hidden">
-        <div className="absolute top-1/2 right-0 w-80 h-80 bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none" />
+    <section id="gallery" className="relative py-24 px-4 overflow-hidden">
+      {/* Background Image with Parallax Effect */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-fixed"
+        style={{
+          backgroundImage: 'url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80)',
+          backgroundAttachment: 'fixed',
+        }}
+      />
+      
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/60" />
+      
+      {/* Gradient Overlays */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40" />
+      <div className="absolute top-1/2 right-0 w-80 h-80 bg-[#D4AF37]/10 rounded-full blur-[120px] pointer-events-none" />
 
-        <div className="max-w-6xl mx-auto relative z-10">
+      <div className="max-w-6xl mx-auto relative z-10">
           {/* Header */}
           <motion.div 
             className="text-center mb-12"
@@ -33,7 +47,7 @@ export default function Gallery() {
             transition={{ duration: 0.6 }}
           >
             <motion.p 
-              className="text-[#B8962E] text-xs font-bold uppercase tracking-[0.3em] mb-3"
+              className="text-[#F5E27A] text-xs font-bold uppercase tracking-[0.3em] mb-3"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -41,8 +55,8 @@ export default function Gallery() {
             >
               Visual Tour
             </motion.p>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#1A1A1A] mb-2">
-              Our <span className="text-gold-gradient">Gallery</span>
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-2">
+              Our <span className="bg-gradient-to-r from-[#D4AF37] via-[#F5E27A] to-[#D4AF37] bg-clip-text text-transparent">Gallery</span>
             </h2>
             <motion.div 
               className="w-16 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mx-auto my-5"
@@ -52,7 +66,7 @@ export default function Gallery() {
               transition={{ delay: 0.4, duration: 0.8 }}
             />
             <motion.p 
-              className="text-[#666666] text-base max-w-xl mx-auto"
+              className="text-gray-300 text-base max-w-xl mx-auto"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -76,8 +90,8 @@ export default function Gallery() {
                 onClick={() => setActive(cat)}
                 className={`text-xs font-bold uppercase tracking-widest px-5 py-2 rounded-full border transition-all duration-200 ${
                   active === cat
-                    ? 'bg-[#D4AF37] text-white border-[#D4AF37] shadow-md'
-                    : 'border-[#D4AF37]/35 text-[#666666] hover:border-[#D4AF37] hover:text-[#B8962E] bg-white'
+                    ? 'bg-[#D4AF37] text-white border-[#D4AF37] shadow-lg shadow-[#D4AF37]/30'
+                    : 'border-[#D4AF37]/50 text-gray-200 hover:border-[#D4AF37] hover:text-[#F5E27A] bg-black/30 backdrop-blur-sm'
                 }`}
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -97,7 +111,7 @@ export default function Gallery() {
               {filtered.map(({ label, tag, size }, i) => (
                 <motion.div 
                   key={label}
-                  className={`relative group rounded-2xl overflow-hidden border border-[#D4AF37]/20 hover:border-[#D4AF37]/55 hover:shadow-[0_4px_25px_rgba(212,175,55,0.15)] transition-all duration-300 bg-white ${
+                  className={`relative group rounded-2xl overflow-hidden border border-[#D4AF37]/30 hover:border-[#D4AF37] hover:shadow-[0_8px_30px_rgba(212,175,55,0.3)] transition-all duration-300 bg-black/40 backdrop-blur-md ${
                     size === 'large' ? 'md:col-span-2 aspect-[16/7]' : 'aspect-video'
                   }`}
                   layout
@@ -107,22 +121,22 @@ export default function Gallery() {
                   transition={{ delay: i * 0.05, duration: 0.4 }}
                   whileHover={{ y: -5, scale: 1.02 }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#FAFAFA] via-white to-[#FFF8E7]" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/0 to-[#D4AF37]/8 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A]/80 via-black/60 to-[#1A1A1A]/80" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/0 to-[#D4AF37]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-                    <div className="w-14 h-14 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center text-2xl group-hover:bg-[#D4AF37]/20 transition-colors">
+                    <div className="w-14 h-14 rounded-2xl bg-[#D4AF37]/20 border border-[#D4AF37]/50 flex items-center justify-center text-2xl group-hover:bg-[#D4AF37]/30 transition-colors">
                       🖼️
                     </div>
-                    <p className="text-[#1A1A1A] text-sm font-semibold text-center px-4">{label}</p>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#B8962E] border border-[#D4AF37]/35 bg-[#D4AF37]/8 px-3 py-1 rounded-full">
+                    <p className="text-white text-sm font-semibold text-center px-4">{label}</p>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#F5E27A] border border-[#D4AF37]/50 bg-[#D4AF37]/20 px-3 py-1 rounded-full">
                       {tag}
                     </span>
                   </div>
 
                   <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="w-full bg-white/90 backdrop-blur rounded-xl px-4 py-3 flex items-center justify-between border border-[#D4AF37]/20">
-                      <p className="text-[#1A1A1A] text-xs font-semibold">{label}</p>
+                    <div className="w-full bg-black/70 backdrop-blur rounded-xl px-4 py-3 flex items-center justify-between border border-[#D4AF37]/40">
+                      <p className="text-white text-xs font-semibold">{label}</p>
                       <span className="text-[#D4AF37] text-lg font-bold">↗</span>
                     </div>
                   </div>
@@ -131,24 +145,6 @@ export default function Gallery() {
             </AnimatePresence>
           </div>
 
-          {/* CTA */}
-          <motion.div 
-            className="text-center mt-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-[#666666] text-sm mb-5">Want to see the actual property?</p>
-            <motion.a 
-              href="/contact" 
-              className="inline-block border-2 border-[#D4AF37] hover:bg-[#D4AF37] text-[#B8962E] hover:text-white font-bold px-10 py-4 rounded-xl text-sm tracking-widest uppercase transition-all duration-300"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Book a Site Visit
-            </motion.a>
-          </motion.div>
         </div>
       </section>
   )

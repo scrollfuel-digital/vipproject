@@ -139,25 +139,6 @@ export default function Gallery() {
           </AnimatePresence>
         </div>
 
-        {/* CTA */}
-        <motion.div 
-          className="text-center mt-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <p className="text-[#666666] text-sm mb-5">Want to see the actual property?</p>
-          <motion.a 
-            href="#contact" 
-            className="inline-block border-2 border-[#D4AF37] hover:bg-[#D4AF37] text-[#B8962E] hover:text-white font-bold px-10 py-4 rounded-xl text-sm tracking-widest uppercase transition-all duration-300"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Book a Site Visit
-          </motion.a>
-        </motion.div>
-
       </div>
     </section>
   )

@@ -2,7 +2,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useParams, useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
-import { ArrowLeft, ChevronLeft, ChevronRight, MapPin, Maximize2, Phone, MessageCircle, Download, Calculator } from "lucide-react"
+import { ArrowLeft, ChevronLeft, ChevronRight, MapPin, Maximize2, Phone, MessageCircle, Download, Calculator, X, Home, Bed, Bath, Car, Wifi, Dumbbell, Shield, Zap } from "lucide-react"
 
 const PROJECTS_DATA = [
     {
@@ -21,6 +21,11 @@ const PROJECTS_DATA = [
             { type: "image", url: "/api/placeholder/900/600" },
             { type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
         ],
+        units: [
+            { id: 1, type: "2BHK", area: "1200 sq.ft", price: 4500000, rooms: 2, baths: 2, parking: 1, floor: "3rd-8th", status: "Available" },
+            { id: 2, type: "3BHK", area: "1800 sq.ft", price: 6200000, rooms: 3, baths: 3, parking: 2, floor: "5th-12th", status: "Available" },
+            { id: 3, type: "Penthouse", area: "2500 sq.ft", price: 9500000, rooms: 4, baths: 4, parking: 3, floor: "Top Floor", status: "Limited" },
+        ],
     },
     {
         id: "commercial-spaces",
@@ -38,6 +43,10 @@ const PROJECTS_DATA = [
             { type: "image", url: "/api/placeholder/900/600" },
             { type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
         ],
+        units: [
+            { id: 1, type: "Shop", area: "500 sq.ft", price: 6500000, rooms: 1, baths: 1, parking: 2, floor: "Ground", status: "Available" },
+            { id: 2, type: "Office", area: "1200 sq.ft", price: 12000000, rooms: 4, baths: 2, parking: 4, floor: "1st-3rd", status: "Available" },
+        ],
     },
     {
         id: "ongoing-projects",
@@ -53,6 +62,10 @@ const PROJECTS_DATA = [
         media: [
             { type: "image", url: "/api/placeholder/900/600" },
             { type: "image", url: "/api/placeholder/900/600" },
+        ],
+        units: [
+            { id: 1, type: "Plot", area: "1000 sq.ft", price: 5500000, rooms: 0, baths: 0, parking: 0, floor: "Ground", status: "Available" },
+            { id: 2, type: "Plot", area: "2500 sq.ft", price: 12500000, rooms: 0, baths: 0, parking: 0, floor: "Ground", status: "Available" },
         ],
     },
     {
@@ -70,7 +83,29 @@ const PROJECTS_DATA = [
             { type: "image", url: "/api/placeholder/900/600" },
             { type: "video", url: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
         ],
+        units: [
+            { id: 1, type: "2BHK", area: "1100 sq.ft", price: 7000000, rooms: 2, baths: 2, parking: 1, floor: "2nd-6th", status: "Ready" },
+            { id: 2, type: "3BHK", area: "1600 sq.ft", price: 9800000, rooms: 3, baths: 2, parking: 2, floor: "4th-9th", status: "Ready" },
+        ],
     },
+]
+
+const UNIT_AMENITIES = [
+    { icon: Wifi, label: "High-Speed WiFi" },
+    { icon: Dumbbell, label: "Fitness Center" },
+    { icon: Shield, label: "24/7 Security" },
+    { icon: Car, label: "Covered Parking" },
+    { icon: Zap, label: "Power Backup" },
+    { icon: Home, label: "Clubhouse" },
+]
+
+const PURCHASE_BENEFITS = [
+    "✓ Zero Brokerage - Direct from Builder",
+    "✓ Flexible Payment Plans Available",
+    "✓ Home Loan Assistance at Best Rates",
+    "✓ RERA Approved & Legally Verified",
+    "✓ Premium Location with High ROI",
+    "✓ Lifetime Maintenance Support",
 ]
 
 const amenityIcons = ["✦", "◈", "⊕", "◉"]
@@ -82,6 +117,10 @@ export default function ProjectDetail() {
     const [loan, setLoan] = useState(3000000)
     const [rate, setRate] = useState(8)
     const [years, setYears] = useState(20)
+    const [showUnitsModal, setShowUnitsModal] = useState(false)
+    const [selectedUnit, setSelectedUnit] = useState(null)
+    const [galleryIndex, setGalleryIndex] = useState(0)
+    const [unitFilter, setUnitFilter] = useState('all')
 
     const project = PROJECTS_DATA.find((p) => p.id === id) || PROJECTS_DATA[0]
 
@@ -379,7 +418,13 @@ export default function ProjectDetail() {
                         {PROJECTS_DATA.map((item, i) => (
                             <motion.div
                                 key={i}
-                                onClick={() => navigate(`/project/${item.id}`)}
+                                onClick={() => {
+                                    if (item.id === project.id) {
+                                        setShowUnitsModal(true)
+                                    } else {
+                                        navigate(`/project/${item.id}`)
+                                    }
+                                }}
                                 whileHover={{ y: -6, scale: 1.01 }}
                                 transition={{ type: "spring", stiffness: 300 }}
                                 className="relative rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-shadow"
@@ -442,6 +487,243 @@ export default function ProjectDetail() {
                     </div>
                 </div>
             </section>
+
+            {/* ── UNITS MODAL ── */}
+            <AnimatePresence>
+                {showUnitsModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-6"
+                        onClick={() => setShowUnitsModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, y: 20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.9, y: 20 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+                        >
+                            <div className="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 z-10">
+                                <div className="flex justify-between items-center mb-6">
+                                    <div>
+                                        <h3 className="text-3xl font-light text-gray-900">{project.title}</h3>
+                                        <p className="text-sm text-gray-400 mt-1 font-sans">Choose your perfect space</p>
+                                    </div>
+                                    <button onClick={() => setShowUnitsModal(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors border-none bg-transparent cursor-pointer">
+                                        <X size={24} className="text-gray-400" />
+                                    </button>
+                                </div>
+
+                                {/* Filter Tabs */}
+                                <div className="flex gap-3">
+                                    {[
+                                        { id: 'all', label: 'All Units', icon: Home },
+                                        { id: 'flat', label: 'Flats Only', icon: Bed },
+                                        { id: 'plot', label: 'Plots Only', icon: Maximize2 },
+                                    ].map((tab) => (
+                                        <button
+                                            key={tab.id}
+                                            onClick={() => setUnitFilter(tab.id)}
+                                            className={`flex items-center gap-2 px-6 py-3 text-sm font-semibold tracking-wider uppercase transition-all border-2 cursor-pointer rounded-lg ${
+                                                unitFilter === tab.id
+                                                    ? 'bg-yellow-500 text-white border-yellow-500'
+                                                    : 'bg-white text-gray-600 border-gray-300 hover:border-yellow-400 hover:text-yellow-600'
+                                            }`}
+                                        >
+                                            <tab.icon size={16} />
+                                            {tab.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="p-8 grid gap-6">
+                                {project.units?.filter((unit) => {
+                                    if (unitFilter === 'all') return true
+                                    if (unitFilter === 'flat') return unit.type.toLowerCase().includes('bhk') || unit.type.toLowerCase().includes('penthouse')
+                                    if (unitFilter === 'plot') return unit.type.toLowerCase().includes('plot')
+                                    return true
+                                }).map((unit) => (
+                                    <motion.div
+                                        key={unit.id}
+                                        whileHover={{ scale: 1.01 }}
+                                        onClick={() => setSelectedUnit(unit)}
+                                        className="border-2 border-gray-200 hover:border-yellow-400 rounded-xl p-6 cursor-pointer transition-all bg-gray-50 hover:bg-yellow-50/30"
+                                    >
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <h4 className="text-2xl font-semibold text-gray-900">{unit.type}</h4>
+                                                    <span className={`text-xs px-3 py-1 rounded-full font-sans font-semibold ${unit.status === 'Available' ? 'bg-green-100 text-green-700' : unit.status === 'Limited' ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'}`}>
+                                                        {unit.status}
+                                                    </span>
+                                                </div>
+                                                <p className="text-yellow-600 text-3xl font-bold mb-4">₹{unit.price.toLocaleString()}</p>
+                                                <div className="flex gap-6 text-sm text-gray-600 font-sans">
+                                                    <div className="flex items-center gap-2"><Maximize2 size={16} className="text-yellow-500" /> {unit.area}</div>
+                                                    {unit.rooms > 0 && <div className="flex items-center gap-2"><Bed size={16} className="text-yellow-500" /> {unit.rooms} Rooms</div>}
+                                                    {unit.baths > 0 && <div className="flex items-center gap-2"><Bath size={16} className="text-yellow-500" /> {unit.baths} Baths</div>}
+                                                    {unit.parking > 0 && <div className="flex items-center gap-2"><Car size={16} className="text-yellow-500" /> {unit.parking} Parking</div>}
+                                                    <div className="flex items-center gap-2"><Home size={16} className="text-yellow-500" /> {unit.floor}</div>
+                                                </div>
+                                            </div>
+                                            <button className="px-6 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-semibold tracking-wider uppercase transition-all border-none cursor-pointer rounded">
+                                                View Details
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                                {project.units?.filter((unit) => {
+                                    if (unitFilter === 'all') return true
+                                    if (unitFilter === 'flat') return unit.type.toLowerCase().includes('bhk') || unit.type.toLowerCase().includes('penthouse')
+                                    if (unitFilter === 'plot') return unit.type.toLowerCase().includes('plot')
+                                    return true
+                                }).length === 0 && (
+                                    <div className="text-center py-16">
+                                        <div className="text-gray-300 mb-4">
+                                            <Home size={64} className="mx-auto" />
+                                        </div>
+                                        <p className="text-xl text-gray-400 font-sans">No {unitFilter === 'flat' ? 'flats' : 'plots'} available in this category</p>
+                                        <button
+                                            onClick={() => setUnitFilter('all')}
+                                            className="mt-4 px-6 py-2 bg-yellow-500 text-white text-sm font-semibold tracking-wider uppercase border-none cursor-pointer rounded-lg hover:bg-yellow-600 transition-all"
+                                        >
+                                            View All Units
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* ── UNIT DETAIL MODAL ── */}
+            <AnimatePresence>
+                {selectedUnit && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[110] bg-black/70 backdrop-blur-sm flex items-center justify-center p-6 overflow-y-auto"
+                        onClick={() => setSelectedUnit(null)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, y: 30 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.9, y: 30 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="bg-white rounded-2xl max-w-6xl w-full max-h-[95vh] overflow-y-auto shadow-2xl my-6"
+                        >
+                            {/* Header */}
+                            <div className="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 flex justify-between items-center z-20">
+                                <div>
+                                    <h3 className="text-4xl font-light text-gray-900">{selectedUnit.type} - {selectedUnit.area}</h3>
+                                    <p className="text-yellow-600 text-2xl font-bold mt-2">₹{selectedUnit.price.toLocaleString()}</p>
+                                </div>
+                                <button onClick={() => setSelectedUnit(null)} className="p-2 hover:bg-gray-100 rounded-full transition-colors border-none bg-transparent cursor-pointer">
+                                    <X size={28} className="text-gray-400" />
+                                </button>
+                            </div>
+
+                            {/* Gallery */}
+                            <div className="relative h-[400px] bg-gray-900">
+                                <img src={project.media[galleryIndex]?.url || "/api/placeholder/1200/400"} alt="Gallery" className="w-full h-full object-cover" />
+                                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                                    {project.media.map((_, i) => (
+                                        <button key={i} onClick={() => setGalleryIndex(i)} className={`h-2 rounded-full transition-all border-none cursor-pointer ${i === galleryIndex ? 'w-8 bg-yellow-500' : 'w-2 bg-white/50'}`} />
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="p-8 grid grid-cols-3 gap-8">
+                                {/* Left: Details */}
+                                <div className="col-span-2 space-y-8">
+                                    {/* Specifications */}
+                                    <div>
+                                        <h4 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                            <Home size={20} className="text-yellow-500" /> Specifications
+                                        </h4>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {[
+                                                { label: "Carpet Area", value: selectedUnit.area },
+                                                { label: "Floor", value: selectedUnit.floor },
+                                                { label: "Bedrooms", value: selectedUnit.rooms || "N/A" },
+                                                { label: "Bathrooms", value: selectedUnit.baths || "N/A" },
+                                                { label: "Parking", value: selectedUnit.parking || "N/A" },
+                                                { label: "Status", value: selectedUnit.status },
+                                            ].map((spec, i) => (
+                                                <div key={i} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                                    <p className="text-xs text-gray-400 uppercase tracking-wider font-sans mb-1">{spec.label}</p>
+                                                    <p className="text-lg font-semibold text-gray-900">{spec.value}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Amenities */}
+                                    <div>
+                                        <h4 className="text-xl font-semibold text-gray-900 mb-4">Premium Amenities</h4>
+                                        <div className="grid grid-cols-3 gap-3">
+                                            {UNIT_AMENITIES.map((amenity, i) => (
+                                                <div key={i} className="flex items-center gap-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                                    <amenity.icon size={18} className="text-yellow-600" />
+                                                    <span className="text-sm text-gray-700 font-sans">{amenity.label}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Purchase Benefits */}
+                                    <div>
+                                        <h4 className="text-xl font-semibold text-gray-900 mb-4">Why Buy This Property?</h4>
+                                        <div className="bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200">
+                                            <div className="grid grid-cols-2 gap-3">
+                                                {PURCHASE_BENEFITS.map((benefit, i) => (
+                                                    <p key={i} className="text-sm text-gray-700 font-sans flex items-start gap-2">
+                                                        <span className="text-yellow-600 font-bold">✓</span>
+                                                        {benefit.replace('✓ ', '')}
+                                                    </p>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Right: CTA */}
+                                <div className="space-y-4">
+                                    <div className="bg-gray-900 text-white p-6 rounded-xl">
+                                        <p className="text-xs tracking-wider uppercase text-yellow-500 mb-2 font-sans">Special Offer</p>
+                                        <p className="text-3xl font-bold mb-1">₹{selectedUnit.price.toLocaleString()}</p>
+                                        <p className="text-sm text-gray-400 line-through font-sans">₹{(selectedUnit.price * 1.15).toLocaleString()}</p>
+                                        <div className="h-px bg-white/20 my-4" />
+                                        <p className="text-xs text-gray-300 font-sans">Limited time offer - Save up to 15%</p>
+                                    </div>
+
+                                    <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-4 text-sm font-semibold tracking-wider uppercase transition-all border-none cursor-pointer rounded-lg">
+                                        Schedule Site Visit
+                                    </button>
+                                    <button className="w-full bg-green-500 hover:bg-green-600 text-white py-4 text-sm font-semibold tracking-wider uppercase transition-all border-none cursor-pointer rounded-lg flex items-center justify-center gap-2">
+                                        <MessageCircle size={18} /> WhatsApp Now
+                                    </button>
+                                    <button className="w-full border-2 border-gray-300 hover:border-yellow-500 text-gray-700 py-4 text-sm font-semibold tracking-wider uppercase transition-all bg-transparent cursor-pointer rounded-lg">
+                                        Download Brochure
+                                    </button>
+
+                                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-6">
+                                        <p className="text-xs text-blue-900 font-sans">
+                                            <strong>Expert Tip:</strong> Book now to lock current prices. Property values expected to rise by 20% in next 6 months.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* ── STICKY BOTTOM BAR ── */}
             <div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-gray-200 px-8 py-4 flex items-center justify-between gap-4 shadow-lg">
                 <div>
