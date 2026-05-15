@@ -36,8 +36,7 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      
-      className="sticky top-4 mx-4 rounded-2xl bg-white shadow-md z-50"
+      className="sticky top-4 mx-4 rounded-2xl bg-black shadow-md z-50"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -45,8 +44,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-2 flex items-center justify-between ">
 
         {/* Logo */}
-        <Link to="/" className="flex items-center z-50">
-          <img src={logo} alt="V.VIP Realty" className="h-16 w-auto object-contain scale-210" />
+        <Link to="/" className="flex items-center z-5 rounded-full">
+          <img src={logo} alt="V.VIP Realty" className="h-16 w-auto object-contain scale-210  " />
         </Link>
 
         {/* Desktop Links */}
@@ -58,7 +57,7 @@ export default function Navbar() {
                 <Link
                   to={to}
                   onClick={(e) => handleNavClick(e, to, label)}
-                  className={`relative text-sm font-medium tracking-wide transition-colors duration-300 group ${isActive ? 'text-[#D4AF37]' : 'text-black hover:text-[#D4AF37]'
+                  className={`relative text-sm font-medium tracking-wide transition-colors duration-300 group ${isActive ? 'text-[#D4AF37]' : 'text-white hover:text-[#D4AF37]'
                     }`}
                 >
                   {label}

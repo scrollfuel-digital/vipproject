@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=Outfit:wght@300;400;600;700;800&family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @layer base {
@@ -29,9 +29,18 @@
 @layer utilities {
   .font-display { font-family: 'Playfair Display', serif; }
   .font-body { font-family: 'Poppins', sans-serif; }
+  .font-serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+  .font-sans { font-family: 'Outfit', system-ui, sans-serif; }
 
   .text-gold-gradient {
     background: linear-gradient(135deg, #D4AF37 0%, #F5E27A 45%, #D4AF37 75%, #A8892A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gold-text {
+    background: linear-gradient(135deg, #c9a84c, #f0d078, #c9a84c);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -52,6 +61,10 @@
 
   .gold-gradient-bg {
     background: linear-gradient(135deg, #D4AF37 0%, #F5E27A 50%, #D4AF37 100%);
+  }
+
+  .gold-bg {
+    background: linear-gradient(135deg, #c9a84c, #f0d078);
   }
 
   .dark-overlay {
@@ -98,6 +111,11 @@
   50% { box-shadow: 0 0 0 20px rgba(212, 175, 55, 0); }
 }
 
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 .animate-float { animation: float 4s ease-in-out infinite; }
 .animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
 .animate-shimmer {
@@ -110,3 +128,9 @@
 }
 .animate-scroll-indicator { animation: scroll-indicator 2s ease-in-out infinite; }
 .animate-pulse-gold { animation: pulse-gold 2s ease-in-out infinite; }
+
+.ticker-track {
+  animation: ticker 28s linear infinite;
+  display: flex;
+  width: max-content;
+}

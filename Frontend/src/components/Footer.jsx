@@ -13,7 +13,7 @@ const MAP_EMBED_URL =
 
 export default function Footer() {
   return (
-    <footer className="bg-white text-black font-[Jost,sans-serif]">
+    <footer className="bg-white text-white font-[Jost,sans-serif] rounded-2xl shadow-2xl inset-shadow-2xs  mx-4 mt-10 ">
 
       {/* ── MAIN FOOTER ───────────────────────── */}
       <div className="max-w-7xl mx-auto px-6 py-10">

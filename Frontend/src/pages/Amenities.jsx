@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
 import {
   Lock, Droplet, Dumbbell, Leaf, ToyBrick, Building2,
   Footprints, Zap, BatteryCharging, ArrowUpDown, Car, Wifi, ArrowRight
@@ -21,8 +20,6 @@ const AMENITIES = [
 ]
 
 export default function AmenitiesPage() {
-  const navigate = useNavigate()
-
   return (
     <div className="min-h-screen bg-white pt-20">
       {/* Hero Section */}
@@ -71,12 +68,11 @@ export default function AmenitiesPage() {
               return (
                 <motion.div
                   key={amenity.id}
-                  className="group cursor-pointer"
+                  className="group "
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  onClick={() => navigate(`/amenity/${amenity.id}`)}
                 >
                   {/* Image Container */}
                   <div className="relative h-64 rounded-2xl overflow-hidden mb-5">
@@ -124,8 +120,6 @@ export default function AmenitiesPage() {
           </div>
         </div>
       </section>
-
-    
     </div>
   )
 }

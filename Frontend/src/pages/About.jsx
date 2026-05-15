@@ -189,9 +189,9 @@ const LeaderCard = ({ name, role, quote, imgSrc, delay, reverse }) => {
 const AboutUs = () => {
   const navigate = useNavigate();
   const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 140]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  // const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  // const heroY = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  // const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   const stats = [
     { icon: Users, value: "15K+", label: "Satisfied Clients", delay: 0.1 },
@@ -222,7 +222,7 @@ const AboutUs = () => {
 
   return (
     <section
-      className="min-h-screen bg-white text-[#1a1208] overflow-x-hidden"
+      className="w-full min-h-screen bg-white text-[#1a1208] relative overflow-hidden"
       style={{ fontFamily: "'DM Sans', sans-serif" }}
     >
       <style>{`
@@ -248,9 +248,9 @@ const AboutUs = () => {
       `}</style>
 
       {/* ═══════════════════════ HERO ═══════════════════════ */}
-      <div ref={heroRef} className="relative h-[92vh] min-h-[600px] overflow-hidden grain-overlay">
+      <div ref={heroRef} className="relative min-h-screen overflow-hidden isolate grain-overlay">
 
-        <motion.div style={{ y: heroY }} className="absolute inset-0">
+        <motion.div  className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1800&q=90"
             alt="hero"
@@ -265,7 +265,6 @@ const AboutUs = () => {
         />
 
         <motion.div
-          style={{ opacity: heroOpacity }}
           className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6"
         >
           <motion.div
