@@ -198,14 +198,14 @@ export default function Hero() {
         </motion.div>
 
         {/* Property Slider - Infinite Loop */}
-        <motion.div
+        {/* <motion.div
           className="w-full pb-10"
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
         >
           <div className="relative">
-            {/* Slider Container */}
+            
             <div className="overflow-visible">
               <motion.div
                 className="flex gap-6"
@@ -233,24 +233,24 @@ export default function Hero() {
                       whileHover={{ scale: 1.03, y: -8 }}
                       transition={{ duration: 0.3 }}
                     >
-                    {/* Property Image */}
+                  
                     <img
                       src={property.image}
                       alt={property.title}
                       className="w-full h-full object-cover"
                     />
 
-                    {/* Gradient Overlay */}
+                 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-                    {/* Badge */}
+                  
                     <div className="absolute top-4 right-4 z-10">
                       <span className="bg-[#D4AF37] text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg">
                         {property.badge}
                       </span>
                     </div>
 
-                    {/* Property Info - Show on Hover */}
+                
                     <AnimatePresence>
                       {isHovered && (
                         <motion.div
@@ -291,7 +291,7 @@ export default function Hero() {
                       )}
                     </AnimatePresence>
 
-                    {/* Minimal Info - Show when not hovered */}
+                  
                     {!isHovered && (
                       <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                         <p className="text-lg font-display font-bold mb-1">{property.title}</p>
@@ -304,7 +304,7 @@ export default function Hero() {
             </motion.div>
           </div>
 
-            {/* Navigation Arrows */}
+           
             <button
               onClick={prevSlide}
               className="absolute -left-30 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full glass-dark border border-white/30 flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 shadow-xl z-20 hover:scale-110"
@@ -318,7 +318,7 @@ export default function Hero() {
               <ChevronRight className="w-6 h-6" />
             </button>
 
-            {/* Dots Indicator */}
+        
             <div className="flex justify-center gap-2 mt-6">
               {FEATURED_PROPERTIES.map((_, index) => (
                 <button
@@ -331,7 +331,7 @@ export default function Hero() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
 
       {/* Bottom Gradient */}
