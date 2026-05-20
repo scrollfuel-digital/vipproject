@@ -194,7 +194,7 @@ function HeroGallery({ images, project, onExploreUnits }) {
       <section className="relative flex flex-col" style={{ background: "#fff" }}>
 
         {/* ── Cinematic hero image (dark zone) ── */}
-        <div className="relative w-full overflow-hidden" style={{ height: "65vh" }}>
+        <div className="relative w-full overflow-hidden" style={{ minHeight: "650px", height: "75vh" }}>
           {images.map((img, i) => (
             <motion.div key={img} className="absolute inset-0"
               animate={{ opacity: i === active ? 1 : 0 }} transition={{ duration: 0.7, ease: "easeInOut" }}>
@@ -228,7 +228,7 @@ function HeroGallery({ images, project, onExploreUnits }) {
           </div>
 
           {/* Left content overlay */}
-          <div className="absolute bottom-16 right-[44%]" style={{ left: "var(--px)" }}>
+          <div className="absolute bottom-30" style={{ left: "90px",  maxWidth: "600px" }}>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}
               className="mb-3 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full glow-dot" style={{ background: "#c9a84c" }} />
@@ -263,7 +263,7 @@ function HeroGallery({ images, project, onExploreUnits }) {
           </div>
 
           {/* Nav arrows + dots */}
-          <div className="absolute bottom-16 right-8 flex flex-col items-end gap-4">
+          <div className="absolute bottom-6 md:bottom-16 right-4 md:right-8 flex flex-col items-end gap-4">
             <div className="flex gap-2">
               <button onClick={prev}
                 className="w-11 h-11 rounded-full flex items-center justify-center text-white transition-all hover:scale-110"
@@ -287,7 +287,7 @@ function HeroGallery({ images, project, onExploreUnits }) {
 
           {/* Location pill */}
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-            className="absolute bottom-16 left-1/2 -translate-x-1/2">
+            className="absolute bottom-32 left-1/2 -translate-x-1/2">
             <div className="flex items-center gap-2 px-4 py-2 rounded-full text-xs"
               style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.14)", backdropFilter: "blur(12px)", color: "rgba(255,255,255,0.65)" }}>
               <MapPin size={11} style={{ color: "#c9a84c" }} />
