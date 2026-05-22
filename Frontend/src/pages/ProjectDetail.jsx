@@ -488,7 +488,7 @@ export default function ProjectDetail() {
       <HeroGallery images={project.images} project={project} onExploreUnits={() => setShowUnitsModal(true)} />
 
       {/* ══ GOLD TICKER ══ */}
-      <div className="gold-bg overflow-hidden py-3.5">
+      <div className="gold-bg overflow-hidden ">
         <div className="ticker-track">
           {[...Array(4)].map((_, ri) => (
             <div key={ri} className="flex shrink-0">

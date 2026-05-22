@@ -4,8 +4,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
+import WhyChooseUs from './components/WhyChooseUs'
 import Amenities from './components/Amenities'
 import Testimonials from './components/Testimonials'
+import FAQ from './components/FAQ'
+// import LuxuryCTA from './components/LuxuryCTA'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 
@@ -24,10 +27,13 @@ function HomeContent() {
     <>
       <Hero />
       <About />
+      <WhyChooseUs />
       <ProjectsPage />
       <Amenities />
       <GalleryPage />
       <Testimonials />
+      <FAQ />
+      {/* <LuxuryCTA /> */}
       <Contact />
     </>
   )

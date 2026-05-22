@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { Home, Building2, HardHat, Key, Road, TrendingUp, ChevronLeft, ChevronRight, X, Bed, Bath, Maximize2, MapPin } from 'lucide-react'
+import { Home, Building2, HardHat, Key, Road, TrendingUp, ChevronLeft, ChevronRight, X, Bed, Bath, Maximize2, MapPin, ArrowRight } from 'lucide-react'
 
 const LOCATIONS = [
   { name: 'MIHAN', desc: 'Major investment hub', icon: Building2 },
@@ -87,6 +87,7 @@ const PROJECTS = [
 function ProjectCard({ project, index, onCardClick }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [selectedPlot, setSelectedPlot] = useState('')
+  const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -106,83 +107,110 @@ function ProjectCard({ project, index, onCardClick }) {
 
   return (
     <motion.div
-      className="bg-white border border-[#D4AF37]/20 rounded-2xl overflow-hidden hover:border-[#D4AF37]/55 hover:shadow-[0_4px_30px_rgba(212,175,55,0.14)] transition-all duration-300 group cursor-pointer"
+      className="group relative bg-white border-2 border-[#D4AF37]/20 rounded-3xl overflow-hidden hover:border-[#D4AF37] hover:shadow-[0_20px_60px_rgba(212,175,55,0.2)] transition-all duration-500 cursor-pointer"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20, scale: 0.97 }}
-      transition={{ delay: index * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -8, scale: 1.02 }}
+      transition={{ delay: index * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -12, scale: 1.02 }}
       layout
       onClick={() => onCardClick(project)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image Slider */}
+      {/* Image Slider with Zoom Effect */}
       <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-[#FAFAFA] to-[#FFF8E7]">
-        <motion.div key={currentImageIndex} className="absolute inset-0" initial={{ opacity: 0, x: 60 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -60 }} transition={{ duration: 0.4 }}>
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#FAFAFA] via-white to-[#FFF8E7]">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-2 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 flex items-center justify-center">
-                <project.icon className="w-8 h-8 text-[#D4AF37]" />
-              </div>
-              <p className="text-xs text-[#666666]">Image {currentImageIndex + 1}</p>
+        <motion.div
+          key={currentImageIndex}
+          className="absolute inset-0"
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: isHovered ? 1.15 : 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#FAFAFA] via-white to-[#FFF8E7] relative">
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <div className="text-center relative z-10">
+              <motion.div
+                className="w-20 h-20 mx-auto mb-3 rounded-3xl bg-[#D4AF37]/10 border-2 border-[#D4AF37]/30 flex items-center justify-center group-hover:bg-[#D4AF37]/20 group-hover:border-[#D4AF37]/50 transition-all duration-500"
+                whileHover={{ rotate: 360, scale: 1.1 }}
+                transition={{ duration: 0.6 }}
+              >
+                <project.icon className="w-10 h-10 text-[#D4AF37]" />
+              </motion.div>
+              <p className="text-xs text-[#666666] font-medium">Image {currentImageIndex + 1}</p>
             </div>
           </div>
         </motion.div>
 
-        <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-white z-10">
+        <button onClick={prevImage} className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 backdrop-blur-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-xl hover:bg-white hover:scale-110 z-20">
           <ChevronLeft className="w-5 h-5 text-[#1A1A1A]" />
         </button>
-        <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-white z-10">
+        <button onClick={nextImage} className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 backdrop-blur-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-xl hover:bg-white hover:scale-110 z-20">
           <ChevronRight className="w-5 h-5 text-[#1A1A1A]" />
         </button>
 
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
           {project.images.map((_, idx) => (
             <button key={idx} onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx) }}
-              className={`h-1.5 rounded-full transition-all ${idx === currentImageIndex ? 'bg-[#D4AF37] w-5' : 'w-1.5 bg-white/60 hover:bg-white/80'}`}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                idx === currentImageIndex
+                  ? 'bg-[#D4AF37] w-8 shadow-lg shadow-[#D4AF37]/50'
+                  : 'w-2 bg-white/70 hover:bg-white hover:w-4'
+              }`}
             />
           ))}
         </div>
 
-        <div className="absolute top-3 right-3 z-10">
-          <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full backdrop-blur"
-            style={{ color: project.badgeColor, border: `1px solid ${project.badgeColor}50`, background: `${project.badgeColor}22` }}>
+        <div className="absolute top-4 right-4 z-20">
+          <motion.span
+            className="text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full backdrop-blur-xl shadow-lg"
+            style={{
+              color: project.badgeColor,
+              border: `2px solid ${project.badgeColor}`,
+              background: `${project.badgeColor}15`
+            }}
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.2 }}
+          >
             {project.badge}
-          </span>
+          </motion.span>
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-5">
-        <p className="text-[#B8962E] text-xs font-semibold uppercase tracking-[0.2em] mb-2">{project.tag}</p>
-        <h3 className="text-[#1A1A1A] font-bold text-xl leading-snug mb-3 group-hover:text-[#D4AF37] transition-colors">{project.title}</h3>
-        <p className="text-[#666666] text-sm leading-6 mb-5 min-h-[72px]">{project.desc}</p>
+      <div className="p-6">
+        <p className="text-[#B8962E] text-xs font-bold uppercase tracking-[0.2em] mb-3">{project.tag}</p>
+        <h3 className="text-[#1A1A1A] font-bold text-xl md:text-2xl leading-tight mb-4 group-hover:text-[#D4AF37] transition-colors duration-300">
+          {project.title}
+        </h3>
+        <p className="text-[#666666] text-sm leading-relaxed mb-6 min-h-[60px]">{project.desc}</p>
 
-        {/* Info Grid: Location + Plot Size Dropdown */}
-        <div className="grid grid-cols-2 gap-3 mb-3 pb-3 border-b border-[#D4AF37]/15">
-
-          {/* Location */}
+        {/* Info Grid */}
+        <div className="grid grid-cols-2 gap-4 mb-4 pb-4 border-b-2 border-[#D4AF37]/15">
           <div>
-            <p className="text-[11px] text-[#666666] uppercase tracking-[0.15em] mb-1.5">Location</p>
-            <p className="text-sm font-semibold text-[#1A1A1A] leading-relaxed">{project.location.split(',')[0]}</p>
+            <p className="text-[10px] text-[#666666] uppercase tracking-[0.15em] mb-2 font-semibold">Location</p>
+            <p className="text-sm font-bold text-[#1A1A1A] leading-relaxed">{project.location.split(',')[0]}</p>
           </div>
 
-          {/* Plot Size Dropdown */}
           <div onClick={(e) => e.stopPropagation()}>
-            <p className="text-[11px] text-[#666666] uppercase tracking-[0.15em] mb-1.5">Plot Size</p>
+            <p className="text-[10px] text-[#666666] uppercase tracking-[0.15em] mb-2 font-semibold">Plot Size</p>
             <div className="relative">
               <select
                 value={selectedPlot}
                 onChange={(e) => setSelectedPlot(e.target.value)}
-                className="w-full appearance-none bg-[#FFFDF5] border border-[#D4AF37]/35 hover:border-[#D4AF37] text-[#1A1A1A] text-sm font-medium pl-3 pr-8 py-2 rounded-xl cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#D4AF37]/40 transition-all"
+                className="w-full appearance-none bg-[#FFFDF5] border-2 border-[#D4AF37]/35 hover:border-[#D4AF37] focus:border-[#D4AF37] text-[#1A1A1A] text-sm font-semibold pl-3 pr-8 py-2.5 rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/30 transition-all"
               >
                 <option value="">All sizes</option>
                 {project.plotSizes.map((size) => (
                   <option key={size} value={size}>{size}</option>
                 ))}
               </select>
-              <div className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-[#D4AF37]">
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                  <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[#D4AF37]">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 4L6 8L10 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
             </div>
@@ -190,19 +218,27 @@ function ProjectCard({ project, index, onCardClick }) {
         </div>
 
         {/* Price & CTA */}
-        <div className="flex items-end justify-between mt-auto pt-4">
+        <div className="flex items-center justify-between mt-auto pt-5">
           <div>
-            <p className="text-[9px] text-[#666666] uppercase tracking-widest mb-0.5">Starting From</p>
-            <p className="text-[#D4AF37] font-bold text-base">{project.price}</p>
+            <p className="text-[10px] text-[#666666] uppercase tracking-widest mb-1 font-semibold">Starting From</p>
+            <p className="text-[#D4AF37] font-bold text-lg md:text-xl">{project.price}</p>
           </div>
-          <button
-            className="text-[10px] font-bold uppercase tracking-widest text-white bg-[#D4AF37] hover:bg-[#B8962E] px-3 py-1.5 rounded-lg transition-colors"
+          <motion.button
+            className="group/btn relative text-xs font-bold uppercase tracking-widest text-white bg-gradient-to-r from-[#D4AF37] to-[#F5E27A] hover:from-[#B8962E] hover:to-[#D4AF37] px-5 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden"
             onClick={(e) => { e.stopPropagation(); onCardClick(project) }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            View Units
-          </button>
+            <span className="relative z-10 flex items-center gap-2">
+              View Units
+              <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+            </span>
+          </motion.button>
         </div>
       </div>
+
+      {/* Hover Accent Corner */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[#D4AF37]/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
     </motion.div>
   )
 }

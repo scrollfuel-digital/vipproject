@@ -995,7 +995,11 @@ const AboutUs = () => {
   ];
 
   return (
-    <section className="w-full bg-white text-[#111111] font-body font-smooth">
+    <section className="w-full bg-white text-[#111111] font-body">
+      <style>{`
+        * { font-family: 'Poppins', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
+      `}</style>
 
       {/* ══ HERO — split layout, compact height ══ */}
       <div className="grid md:grid-cols-2 min-h-[72vh]">
